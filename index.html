@@ -2,55 +2,79 @@
 <html>
 <head>
   <title>Funny Letter AI 😂✉️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       font-family: 'Segoe UI';
       background: linear-gradient(135deg, #667eea, #764ba2);
+      margin: 0;
+      padding: 0;
       color: white;
-      text-align: center;
-      padding: 20px;
     }
 
     .box {
       background: white;
       color: black;
-      padding: 20px;
-      border-radius: 20px;
-      max-width: 650px;
+      min-height: 100vh;
+      padding: 15px;
+      border-radius: 0;
+      width: 100%;
+      max-width: 500px;
       margin: auto;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      margin-top: 5px;
     }
 
     button {
-      padding: 10px;
-      margin: 6px;
-      border-radius: 10px;
+      padding: 12px;
+      margin: 6px 0;
+      border-radius: 12px;
       border: none;
       background: #ff6b6b;
       color: white;
+      width: 100%;
+      font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
     }
 
+    button:hover {
+      background: #ff4b4b;
+    }
+
     input, textarea {
-      padding: 10px;
-      margin: 5px;
-      width: 85%;
-      border-radius: 8px;
+      padding: 12px;
+      margin: 6px 0;
+      width: 100%;
+      border-radius: 10px;
       border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
     }
 
     #letter {
-      margin-top: 20px;
+      margin-top: 15px;
       white-space: pre-line;
       background: #f9f9f9;
-      padding: 15px;
-      border-radius: 10px;
+      padding: 12px;
+      border-radius: 12px;
       text-align: left;
+      font-size: 15px;
     }
 
     #showTopic {
       font-weight: bold;
-      margin: 10px;
+      margin: 10px 0;
     }
+
+    .section {
+      margin-top: 10px;
+    }
+
   </style>
 </head>
 
@@ -82,7 +106,6 @@
   <!-- STEP 3 -->
   <div id="step3" style="display:none;">
     <p id="showTopic"></p>
-    <p>Pick Funny Words:</p>
 
     <input id="name" placeholder="Your Name">
     <input id="noun" placeholder="Noun">
@@ -90,14 +113,14 @@
     <input id="adj" placeholder="Adjective">
     <input id="noun2" placeholder="Another noun">
     <input id="plural2" placeholder="Another plural">
-    <br>
+
     <button onclick="generate()">Generate 😂</button>
   </div>
 
   <div id="letter"></div>
 
   <!-- ACTIONS -->
-  <div id="actions" style="display:none;">
+  <div id="actions" style="display:none;" class="section">
     <button onclick="addTwist()">😈 Plot Twist</button>
     <button onclick="rateLetter()">🤖 AI Rate</button>
     <button onclick="restart()">🔁 Play Again</button>
@@ -107,18 +130,15 @@
   <div id="rating"></div>
 
   <!-- FEEDBACK -->
-  <div id="feedbackBox" style="display:none;">
+  <div id="feedbackBox" style="display:none;" class="section">
     <h3>Feedback 💬</h3>
     <textarea id="feedback"></textarea>
-    <br>
     <button onclick="submitFeedback()">Submit</button>
   </div>
 
 </div>
 
 <script>
-
-// 🔊 SOUND
 function clickSound(){
   let audio = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
   audio.play();
@@ -128,7 +148,6 @@ let letterType = "";
 let topic = "";
 let currentLetter = "";
 
-// STEP 1
 function setLetter(type){
   clickSound();
   letterType = type;
@@ -156,7 +175,6 @@ function setLetter(type){
   document.getElementById("topics").innerHTML = html;
 }
 
-// STEP 2
 function setTopic(t){
   clickSound();
   topic = t;
@@ -167,7 +185,6 @@ function setTopic(t){
   document.getElementById("showTopic").innerText = "Topic: " + topic;
 }
 
-// GENERATE LETTER (Different styles)
 function generate(){
   clickSound();
 
@@ -178,51 +195,12 @@ function generate(){
   let noun2 = document.getElementById("noun2").value;
   let plural2 = document.getElementById("plural2").value;
 
-  if(letterType === "Friend"){
-    currentLetter = `BROOO 😂
-
-I ${topic}! Then a ${noun} appeared. Then ${plural} went FULL ${adj} MODE 💀.
-I used a ${noun2} but now ${plural2} are EVERYWHERE.
-
--${name}`;
-  }
-
-  else if(letterType === "Teacher"){
-    currentLetter = `Respected Teacher,
-
-I ${topic}. A ${noun} and ${plural} created a ${adj} situation.
-Even after using a ${noun2}, ${plural2} increased.
-
--${name}`;
-  }
-
-  else if(letterType === "Police"){
-    currentLetter = `To Police,
-
-I ${topic}. A ${noun} and ${plural} caused a ${adj} situation.
-I tried using a ${noun2}, but ${plural2} spread.
-
-Please consider this explanation.
-
--${name}`;
-  }
-
-  else{
-    currentLetter = `Dear ${letterType},
-
-I ${topic}. Then a ${noun} appeared.
-Then ${plural} made everything ${adj}.
-I used a ${noun2} but now ${plural2} are everywhere.
-
-Yours,
-${name} 😂`;
-  }
+  currentLetter = `Dear ${letterType},\n\nI ${topic}. Then a ${noun} appeared.\n${plural} made everything ${adj}.\nI used a ${noun2} but now ${plural2} are everywhere.\n\n-${name} 😂`;
 
   document.getElementById("letter").innerText = currentLetter;
   document.getElementById("actions").style.display = "block";
 }
 
-// 😈 PLOT TWIST
 function addTwist(){
   clickSound();
 
@@ -239,28 +217,23 @@ function addTwist(){
   document.getElementById("letter").innerText = currentLetter;
 }
 
-// 🤖 AI RATING
 function rateLetter(){
   clickSound();
   let score = Math.floor(Math.random()*5)+6;
   document.getElementById("rating").innerText = "AI Rating: " + score + "/10 😂";
 }
 
-// 🔁 RESTART
 function restart(){
   location.reload();
 }
 
-// 🛑 END GAME
 function endGame(){
   document.getElementById("feedbackBox").style.display = "block";
 }
 
-// 💬 FEEDBACK
 function submitFeedback(){
   alert("Thanks for your feedback 😄");
 }
-
 </script>
 
 </body>
