@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Funny Letter AI 😂✉️</title>
+  <style>
+    body {
+      font-family: 'Segoe UI';
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .box {
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 20px;
+      max-width: 650px;
+      margin: auto;
+    }
+
+    button {
+      padding: 10px;
+      margin: 6px;
+      border-radius: 10px;
+      border: none;
+      background: #ff6b6b;
+      color: white;
+      cursor: pointer;
+    }
+
+    input, textarea {
+      padding: 10px;
+      margin: 5px;
+      width: 85%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    #letter {
+      margin-top: 20px;
+      white-space: pre-line;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    #showTopic {
+      font-weight: bold;
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>😂 Funny Letter AI ✉️</h2>
+
+  <!-- STEP 1 -->
+  <div id="step1">
+    <p>Choose Person:</p>
+    <button onclick="setLetter('Mother')">👩 Mother</button>
+    <button onclick="setLetter('Father')">👨 Father</button>
+    <button onclick="setLetter('Teacher')">📚 Teacher</button>
+    <button onclick="setLetter('Principal')">🏫 Principal</button>
+    <button onclick="setLetter('Friend')">😂 Friend</button>
+    <button onclick="setLetter('Shopkeeper')">🛒 Shopkeeper</button>
+    <button onclick="setLetter('Police')">🚓 Police</button>
+    <button onclick="setLetter('Neighbor')">🏠 Neighbor</button>
+    <button onclick="setLetter('Grandma')">👵 Grandma</button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="step2" style="display:none;">
+    <p>Choose Topic:</p>
+    <div id="topics"></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div id="step3" style="display:none;">
+    <p id="showTopic"></p>
+    <p>Pick Funny Words:</p>
+
+    <input id="name" placeholder="Your Name">
+    <input id="noun" placeholder="Noun">
+    <input id="plural" placeholder="Plural">
+    <input id="adj" placeholder="Adjective">
+    <input id="noun2" placeholder="Another noun">
+    <input id="plural2" placeholder="Another plural">
+    <br>
+    <button onclick="generate()">Generate 😂</button>
+  </div>
+
+  <div id="letter"></div>
+
+  <!-- ACTIONS -->
+  <div id="actions" style="display:none;">
+    <button onclick="addTwist()">😈 Plot Twist</button>
+    <button onclick="rateLetter()">🤖 AI Rate</button>
+    <button onclick="restart()">🔁 Play Again</button>
+    <button onclick="endGame()">🛑 End Game</button>
+  </div>
+
+  <div id="rating"></div>
+
+  <!-- FEEDBACK -->
+  <div id="feedbackBox" style="display:none;">
+    <h3>Feedback 💬</h3>
+    <textarea id="feedback"></textarea>
+    <br>
+    <button onclick="submitFeedback()">Submit</button>
+  </div>
+
+</div>
+
+<script>
+
+// 🔊 SOUND
+function clickSound(){
+  let audio = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+  audio.play();
+}
+
+let letterType = "";
+let topic = "";
+let currentLetter = "";
+
+// STEP 1
+function setLetter(type){
+  clickSound();
+  letterType = type;
+
+  document.getElementById("step1").style.display = "none";
+  document.getElementById("step2").style.display = "block";
+
+  let topicList = {
+    Mother: ["burned the kitchen", "made a mess"],
+    Father: ["spent all money on snacks", "lost keys"],
+    Teacher: ["forgot homework", "slept in class"],
+    Principal: ["caused school chaos", "assembly disaster"],
+    Friend: ["did something embarrassing", "fell badly"],
+    Shopkeeper: ["ate shop snacks", "gave wrong change"],
+    Police: ["broke traffic rules", "ran from police"],
+    Neighbor: ["made noise", "parking fight"],
+    Grandma: ["burned the kitchen", "made weird food"]
+  };
+
+  let html = "";
+  topicList[type].forEach(t=>{
+    html += `<button onclick="setTopic('${t}')">${t}</button>`;
+  });
+
+  document.getElementById("topics").innerHTML = html;
+}
+
+// STEP 2
+function setTopic(t){
+  clickSound();
+  topic = t;
+
+  document.getElementById("step2").style.display = "none";
+  document.getElementById("step3").style.display = "block";
+
+  document.getElementById("showTopic").innerText = "Topic: " + topic;
+}
+
+// GENERATE LETTER (Different styles)
+function generate(){
+  clickSound();
+
+  let name = document.getElementById("name").value || "Me";
+  let noun = document.getElementById("noun").value;
+  let plural = document.getElementById("plural").value;
+  let adj = document.getElementById("adj").value;
+  let noun2 = document.getElementById("noun2").value;
+  let plural2 = document.getElementById("plural2").value;
+
+  if(letterType === "Friend"){
+    currentLetter = `BROOO 😂
+
+I ${topic}! Then a ${noun} appeared. Then ${plural} went FULL ${adj} MODE 💀.
+I used a ${noun2} but now ${plural2} are EVERYWHERE.
+
+-${name}`;
+  }
+
+  else if(letterType === "Teacher"){
+    currentLetter = `Respected Teacher,
+
+I ${topic}. A ${noun} and ${plural} created a ${adj} situation.
+Even after using a ${noun2}, ${plural2} increased.
+
+-${name}`;
+  }
+
+  else if(letterType === "Police"){
+    currentLetter = `To Police,
+
+I ${topic}. A ${noun} and ${plural} caused a ${adj} situation.
+I tried using a ${noun2}, but ${plural2} spread.
+
+Please consider this explanation.
+
+-${name}`;
+  }
+
+  else{
+    currentLetter = `Dear ${letterType},
+
+I ${topic}. Then a ${noun} appeared.
+Then ${plural} made everything ${adj}.
+I used a ${noun2} but now ${plural2} are everywhere.
+
+Yours,
+${name} 😂`;
+  }
+
+  document.getElementById("letter").innerText = currentLetter;
+  document.getElementById("actions").style.display = "block";
+}
+
+// 😈 PLOT TWIST
+function addTwist(){
+  clickSound();
+
+  let twists = [
+    "P.S. The banana was controlling everything.",
+    "P.S. This was all a secret plan.",
+    "P.S. The teacher knew everything.",
+    "P.S. I think this will happen again."
+  ];
+
+  let twist = twists[Math.floor(Math.random()*twists.length)];
+  currentLetter += "\n\n" + twist;
+
+  document.getElementById("letter").innerText = currentLetter;
+}
+
+// 🤖 AI RATING
+function rateLetter(){
+  clickSound();
+  let score = Math.floor(Math.random()*5)+6;
+  document.getElementById("rating").innerText = "AI Rating: " + score + "/10 😂";
+}
+
+// 🔁 RESTART
+function restart(){
+  location.reload();
+}
+
+// 🛑 END GAME
+function endGame(){
+  document.getElementById("feedbackBox").style.display = "block";
+}
+
+// 💬 FEEDBACK
+function submitFeedback(){
+  alert("Thanks for your feedback 😄");
+}
+
+</script>
+
+</body>
+</html>
