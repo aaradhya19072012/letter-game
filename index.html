@@ -9,25 +9,19 @@
       font-family: 'Segoe UI';
       background: linear-gradient(135deg, #667eea, #764ba2);
       margin: 0;
-      padding: 0;
-      color: white;
     }
 
     .box {
       background: white;
       color: black;
       min-height: 100vh;
-      padding: 15px;
-      border-radius: 0;
-      width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       margin: auto;
+      padding: 15px;
       box-sizing: border-box;
     }
 
-    h2 {
-      margin-top: 5px;
-    }
+    h2 { text-align: center; }
 
     button {
       padding: 12px;
@@ -42,9 +36,7 @@
       cursor: pointer;
     }
 
-    button:hover {
-      background: #ff4b4b;
-    }
+    button:active { transform: scale(0.97); }
 
     input, textarea {
       padding: 12px;
@@ -52,40 +44,33 @@
       width: 100%;
       border-radius: 10px;
       border: 1px solid #ccc;
-      font-size: 16px;
       box-sizing: border-box;
+      font-size: 16px;
     }
 
     #letter {
       margin-top: 15px;
       white-space: pre-line;
-      background: #f9f9f9;
+      background: #f4f4f4;
       padding: 12px;
       border-radius: 12px;
-      text-align: left;
-      font-size: 15px;
+      min-height: 120px;
     }
 
-    #showTopic {
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
-    .section {
-      margin-top: 10px;
-    }
-
+    .section { margin-top: 10px; }
   </style>
 </head>
 
 <body>
 
 <div class="box">
+
   <h2>😂 Funny Letter AI ✉️</h2>
 
   <!-- STEP 1 -->
   <div id="step1">
     <p>Choose Person:</p>
+
     <button onclick="setLetter('Mother')">👩 Mother</button>
     <button onclick="setLetter('Father')">👨 Father</button>
     <button onclick="setLetter('Teacher')">📚 Teacher</button>
@@ -95,6 +80,14 @@
     <button onclick="setLetter('Police')">🚓 Police</button>
     <button onclick="setLetter('Neighbor')">🏠 Neighbor</button>
     <button onclick="setLetter('Grandma')">👵 Grandma</button>
+    <button onclick="setLetter('Doctor')">🧑‍⚕️ Doctor</button>
+    <button onclick="setLetter('Chef')">👨‍🍳 Chef</button>
+    <button onclick="setLetter('Hacker')">🧑‍💻 Hacker</button>
+    <button onclick="setLetter('Alien')">👽 Alien</button>
+    <button onclick="setLetter('Robot')">🤖 Robot</button>
+    <button onclick="setLetter('Wizard')">🧙 Wizard</button>
+    <button onclick="setLetter('Scientist')">🧪 Scientist</button>
+    <button onclick="setLetter('Student')">🎓 Student</button>
   </div>
 
   <!-- STEP 2 -->
@@ -105,70 +98,74 @@
 
   <!-- STEP 3 -->
   <div id="step3" style="display:none;">
-    <p id="showTopic"></p>
 
     <input id="name" placeholder="Your Name">
     <input id="noun" placeholder="Noun">
     <input id="plural" placeholder="Plural">
     <input id="adj" placeholder="Adjective">
     <input id="noun2" placeholder="Another noun">
-    <input id="plural2" placeholder="Another plural">
 
     <button onclick="generate()">Generate 😂</button>
   </div>
 
   <div id="letter"></div>
-
-  <!-- ACTIONS -->
-  <div id="actions" style="display:none;" class="section">
-    <button onclick="addTwist()">😈 Plot Twist</button>
-    <button onclick="rateLetter()">🤖 AI Rate</button>
-    <button onclick="restart()">🔁 Play Again</button>
-    <button onclick="endGame()">🛑 End Game</button>
-  </div>
-
   <div id="rating"></div>
 
+  <!-- ACTIONS -->
+  <div id="actions" style="display:none;">
+
+    <button onclick="plotTwist()">😈 Plot Twist</button>
+    <button onclick="aiRate()">🤖 AI Rating</button>
+    <button onclick="playAgain()">🔁 Play Again</button>
+    <button onclick="endGame()">🛑 End Game</button>
+
+  </div>
+
   <!-- FEEDBACK -->
-  <div id="feedbackBox" style="display:none;" class="section">
-    <h3>Feedback 💬</h3>
-    <textarea id="feedback"></textarea>
-    <button onclick="submitFeedback()">Submit</button>
+  <div id="feedbackBox" style="display:none;">
+    <textarea id="feedback" placeholder="Write feedback..."></textarea>
+    <button onclick="submitFeedback()">Submit Feedback</button>
   </div>
 
 </div>
 
 <script>
-function clickSound(){
-  let audio = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
-  audio.play();
-}
 
 let letterType = "";
 let topic = "";
 let currentLetter = "";
 
+/* 17 PEOPLE */
+let topicList = {
+  Mother:["burned kitchen","lost recipe","midnight chaos"],
+  Father:["wallet missing","TV remote war","car keys lost"],
+  Teacher:["homework chaos","exam disaster","silent class"],
+  Principal:["assembly chaos","rule change","student rebellion"],
+  Friend:["prank disaster","funny moment","embarrassing chaos"],
+  Shopkeeper:["wrong change","snack theft","shop chaos"],
+  Police:["traffic chase","missing evidence","wrong arrest"],
+  Neighbor:["loud music","parking fight","garden chaos"],
+  Grandma:["burnt food","mystery recipe","magic cooking"],
+  Doctor:["hospital chaos","patient mix-up","medicine mystery"],
+  Chef:["kitchen explosion","recipe failure","food chaos"],
+  Hacker:["system hack","virus attack","password chaos"],
+  Alien:["earth landing","space crash","galaxy chaos"],
+  Robot:["AI glitch","robot cooking","machine failure"],
+  Wizard:["magic spell","potion explosion","portal chaos"],
+  Scientist:["lab explosion","time machine","experiment chaos"],
+  Student:["exam cheating","homework missing","class prank"]
+};
+
 function setLetter(type){
-  clickSound();
   letterType = type;
 
   document.getElementById("step1").style.display = "none";
   document.getElementById("step2").style.display = "block";
 
-  let topicList = {
-    Mother: ["burned the kitchen", "made a mess"],
-    Father: ["spent all money on snacks", "lost keys"],
-    Teacher: ["forgot homework", "slept in class"],
-    Principal: ["caused school chaos", "assembly disaster"],
-    Friend: ["did something embarrassing", "fell badly"],
-    Shopkeeper: ["ate shop snacks", "gave wrong change"],
-    Police: ["broke traffic rules", "ran from police"],
-    Neighbor: ["made noise", "parking fight"],
-    Grandma: ["burned the kitchen", "made weird food"]
-  };
+  let list = topicList[type];
 
   let html = "";
-  topicList[type].forEach(t=>{
+  list.forEach(t=>{
     html += `<button onclick="setTopic('${t}')">${t}</button>`;
   });
 
@@ -176,64 +173,74 @@ function setLetter(type){
 }
 
 function setTopic(t){
-  clickSound();
   topic = t;
 
   document.getElementById("step2").style.display = "none";
   document.getElementById("step3").style.display = "block";
-
-  document.getElementById("showTopic").innerText = "Topic: " + topic;
 }
 
 function generate(){
-  clickSound();
 
   let name = document.getElementById("name").value || "Me";
-  let noun = document.getElementById("noun").value;
-  let plural = document.getElementById("plural").value;
-  let adj = document.getElementById("adj").value;
-  let noun2 = document.getElementById("noun2").value;
-  let plural2 = document.getElementById("plural2").value;
+  let noun = document.getElementById("noun").value || "banana";
+  let plural = document.getElementById("plural").value || "cats";
+  let adj = document.getElementById("adj").value || "crazy";
+  let noun2 = document.getElementById("noun2").value || "robot";
 
-  currentLetter = `Dear ${letterType},\n\nI ${topic}. Then a ${noun} appeared.\n${plural} made everything ${adj}.\nI used a ${noun2} but now ${plural2} are everywhere.\n\n-${name} 😂`;
+  currentLetter =
+`Dear ${letterType},
+
+Topic: ${topic}
+
+A ${noun} appeared suddenly.
+
+${plural} became very ${adj}.
+
+A ${noun2} made everything worse.
+
+Now everything is chaos.
+
+- ${name} 😂`;
 
   document.getElementById("letter").innerText = currentLetter;
   document.getElementById("actions").style.display = "block";
 }
 
-function addTwist(){
-  clickSound();
-
+/* PLOT TWIST */
+function plotTwist(){
   let twists = [
-    "P.S. The banana was controlling everything.",
-    "P.S. This was all a secret plan.",
-    "P.S. The teacher knew everything.",
-    "P.S. I think this will happen again."
+    "P.S. This was all a dream 😴",
+    "P.S. You are inside the story 👀",
+    "P.S. The letter is alive 😱",
+    "P.S. It will continue again..."
   ];
 
-  let twist = twists[Math.floor(Math.random()*twists.length)];
-  currentLetter += "\n\n" + twist;
-
+  currentLetter += "\n\n" + twists[Math.floor(Math.random()*twists.length)];
   document.getElementById("letter").innerText = currentLetter;
 }
 
-function rateLetter(){
-  clickSound();
+/* AI RATING */
+function aiRate(){
   let score = Math.floor(Math.random()*5)+6;
-  document.getElementById("rating").innerText = "AI Rating: " + score + "/10 😂";
+  document.getElementById("rating").innerText =
+    "🤖 AI Rating: " + score + "/10 😂";
 }
 
-function restart(){
+/* PLAY AGAIN */
+function playAgain(){
   location.reload();
 }
 
+/* END GAME */
 function endGame(){
   document.getElementById("feedbackBox").style.display = "block";
 }
 
+/* FEEDBACK */
 function submitFeedback(){
   alert("Thanks for your feedback 😄");
 }
+
 </script>
 
 </body>
